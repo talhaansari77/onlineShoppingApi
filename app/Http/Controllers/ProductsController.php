@@ -57,11 +57,12 @@ class ProductsController extends Controller
             // $data['image'] = $_SERVER['SERVER_NAME'].'/ProductImages/'.$name;
 
             //! Using the Storage facade
-            $data['image'] = $_SERVER['SERVER_NAME'].'/storage/'.$request->image->store('products', 'public');
+            $data['image'] = $_SERVER['SERVER_NAME'] . '/storage/' . $request->image->store('products', 'public');
         }
 
-        $product = Products::create($data);        
-        return $product->category();
+        $product = Products::create($data);
+        $product->category;
+        return $product;
     }
 
     /**
@@ -120,7 +121,7 @@ class ProductsController extends Controller
             // $data['image'] = $_SERVER['SERVER_NAME'].'/ProductImages/'.$name;
 
             //! using the Storage facade
-            $data['image'] = $_SERVER['SERVER_NAME'].'/storage/'.$request->image->store('products', 'public');
+            $data['image'] = $_SERVER['SERVER_NAME'] . '/storage/' . $request->image->store('products', 'public');
         }
 
         $product = Products::with('category')->find($id);
