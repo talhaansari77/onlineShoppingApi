@@ -37,6 +37,7 @@ class CategoriesController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
+            'status' => 'string'
         ]);
         $category = Categories::create($data);
         return $category;
@@ -51,7 +52,7 @@ class CategoriesController extends Controller
     public function show($id)
     {
         if (Categories::find($id))
-            return Categories::find($id);
+            return Categories::with('products')->find($id);
         return response()->json(['message' => 'Not Found']);
     }
 
@@ -77,6 +78,7 @@ class CategoriesController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
+            'status' => 'string'
         ]);
         $category = Categories::find($id);
         if ($category) {

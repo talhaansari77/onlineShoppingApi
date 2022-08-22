@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductVariants;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductVariantsController extends Controller
 {
@@ -14,7 +15,13 @@ class ProductVariantsController extends Controller
      */
     public function index()
     {
-        return ProductVariants::all();
+        $result = DB::table('product_variants')
+            ->join('products', 'product_variants.productId', '=', 'products.id')
+            ->join('discounts', 'product_variants.discountId', '=', 'discounts.id')
+            ->select('product_variants.*', 'products.name as productName','products.image', 'discounts.discountPrice')
+            ->get();
+        // $result= ProductVariants::with('product')->get();
+        return $result;
     }
 
     /**
@@ -46,7 +53,8 @@ class ProductVariantsController extends Controller
             'colorId' => 'required|integer',
             'sizeId' => 'required|integer',
             'discountId' => 'required|integer',
-            'productId' => 'required|integer',        
+            'productId' => 'required|integer',
+            'status' => 'string'
         ]);
         $productVariant = ProductVariants::create($data);
         return response()->json(
@@ -54,10 +62,10 @@ class ProductVariantsController extends Controller
                 'productVariant' => $productVariant,
                 'product' => $productVariant->product()->first(),
                 'variant' => [
-                    'color' =>$productVariant->color()->first(),
-                    'size' =>$productVariant->size()->first(),
-                    'discount' =>$productVariant->discount()->first()
-                    ]
+                    'color' => $productVariant->color()->first(),
+                    'size' => $productVariant->size()->first(),
+                    'discount' => $productVariant->discount()->first()
+                ]
             ],
             200
         );
@@ -73,18 +81,18 @@ class ProductVariantsController extends Controller
     {
         $productVariant = ProductVariants::find($id);
         if ($productVariant)
-        return response()->json(
-            [
-                'productVariant' => $productVariant,
-                'product' => $productVariant->product()->first(),
-                'variant' => [
-                    'color' =>$productVariant->color()->first(),
-                    'size' =>$productVariant->size()->first(),
-                    'discount' =>$productVariant->discount()->first()
+            return response()->json(
+                [
+                    'productVariant' => $productVariant,
+                    'product' => $productVariant->product()->first(),
+                    'variant' => [
+                        'color' => $productVariant->color()->first(),
+                        'size' => $productVariant->size()->first(),
+                        'discount' => $productVariant->discount()->first()
                     ]
-            ],
-            200
-        );
+                ],
+                200
+            );
         return response()->json(['message' => 'Not Found']);
     }
 
@@ -119,7 +127,8 @@ class ProductVariantsController extends Controller
             'colorId' => 'required|integer',
             'sizeId' => 'required|integer',
             'discountId' => 'required|integer',
-            'productId' => 'required|integer',        
+            'productId' => 'required|integer',
+            'status' => 'string'
         ]);
         $productVariant = ProductVariants::find($id);
         if ($productVariant) {
@@ -129,10 +138,10 @@ class ProductVariantsController extends Controller
                     'productVariant' => $productVariant,
                     'product' => $productVariant->product()->first(),
                     'variant' => [
-                        'color' =>$productVariant->color()->first(),
-                        'size' =>$productVariant->size()->first(),
-                        'discount' =>$productVariant->discount()->first()
-                        ]
+                        'color' => $productVariant->color()->first(),
+                        'size' => $productVariant->size()->first(),
+                        'discount' => $productVariant->discount()->first()
+                    ]
                 ],
                 200
             );

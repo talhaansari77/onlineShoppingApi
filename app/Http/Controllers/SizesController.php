@@ -37,6 +37,7 @@ class SizesController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
+            'status' => 'string'
         ]);
         $sizes = Sizes::create($data);
         return $sizes;
@@ -51,7 +52,7 @@ class SizesController extends Controller
     public function show($id)
     {
         if (Sizes::find($id))
-            return Sizes::find($id);
+            return Sizes::with('variants')->find($id);
         return response()->json(['message' => 'Not Found']);
     }
 
@@ -77,6 +78,7 @@ class SizesController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
+            'status' => 'string'
         ]);
         $sizes = Sizes::find($id);
         if ($sizes) {

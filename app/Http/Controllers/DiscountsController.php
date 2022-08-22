@@ -38,6 +38,7 @@ class DiscountsController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:30',
             'discountPrice' => 'required|string',
+            'status' => 'string'
         ]);
         $discounts = Discounts::create($data);
         return $discounts;
@@ -52,7 +53,7 @@ class DiscountsController extends Controller
     public function show($id)
     {
         if (Discounts::find($id))
-            return Discounts::find($id);
+            return Discounts::with('variants')->find($id);
         return response()->json(['message' => 'Not Found']);
     }
 
@@ -79,6 +80,7 @@ class DiscountsController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:30',            
             'discountPrice' => 'required|string',
+            'status' => 'string'
         ]);
         $discounts = Discounts::find($id);
         if ($discounts) {

@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->string("image")->nullable();
             $table->string("brand");
             $table->string("tags");
+            $table->string("status", 10)->default('Active');
             $table->timestamps();
         });
     }

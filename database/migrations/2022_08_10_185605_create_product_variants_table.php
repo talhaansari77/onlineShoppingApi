@@ -31,7 +31,7 @@ class CreateProductVariantsTable extends Migration
             $table->foreign('discountId')->references('id')->on('discounts')->onDelete('cascade');// foreign key constraint
             $table->bigInteger('productId')->unsigned();
             $table->foreign('productId')->references('id')->on('products')->onDelete('cascade');// foreign key constraint
-
+            $table->string("status", 10)->default('Active');
             $table->timestamps();
         });
     }

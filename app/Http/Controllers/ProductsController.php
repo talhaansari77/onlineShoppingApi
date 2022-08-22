@@ -14,7 +14,8 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        return Products::all();
+        $result = Products::with('category')->get();
+        return $result;
     }
 
     /**
@@ -43,29 +44,24 @@ class ProductsController extends Controller
             // 'image' => 'required|string',
             'brand' => 'required|string|max:30',
             'tags' => 'required|string|max:255',
+            'status' => 'string'
 
         ]);
 
         if ($request->hasFile('image')) {
-            //! save image to public/images
-            $image = $request->file('image');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/ProductImages');
-            $image->move($destinationPath, $name);
-            $data['image'] = $_SERVER['SERVER_NAME'].'/ProductImages/'.$name;
+            // //! save image to public/images
+            // $image = $request->file('image');
+            // $name = time().'.'.$image->getClientOriginalExtension();
+            // $destinationPath = public_path('/ProductImages');
+            // $image->move($destinationPath, $name);
+            // $data['image'] = $_SERVER['SERVER_NAME'].'/ProductImages/'.$name;
 
             //! Using the Storage facade
-            // $data['image'] = $_SERVER['SERVER_NAME'].'/storage/'.$request->image->store('public/products');
+            $data['image'] = $_SERVER['SERVER_NAME'].'/storage/'.$request->image->store('products', 'public');
         }
 
-        $product = Products::create($data);
-        return response()->json(
-            [
-                'product' => $product,
-                'category' => $product->category()->first()
-            ],
-            200
-        );
+        $product = Products::create($data);        
+        return $product->category();
     }
 
     /**
@@ -76,15 +72,9 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Products::find($id);
+        $product = Products::with('category')->find($id);
         if ($product) {
-            return response()->json(
-                [
-                    'product' => $product,
-                    'category' => $product->category()->first()
-                ],
-                200
-            );
+            return $product;
         }
         return response()->json(['message' => 'Not Found']);
     }
@@ -117,31 +107,25 @@ class ProductsController extends Controller
             // 'image' => 'required|string',
             'brand' => 'required|string|max:30',
             'tags' => 'required|string|max:255',
+            'status' => 'string'
 
         ]);
 
         if ($request->hasFile('image')) {
             //! save image to public/images
-            $image = $request->file('image');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/ProductImages');
-            $image->move($destinationPath, $name);
-            $data['image'] = $_SERVER['SERVER_NAME'].'/ProductImages/'.$name;
+            // $image = $request->file('image');
+            // $name = time().'.'.$image->getClientOriginalExtension();
+            // $destinationPath = public_path('/ProductImages');
+            // $image->move($destinationPath, $name);
+            // $data['image'] = $_SERVER['SERVER_NAME'].'/ProductImages/'.$name;
 
             //! using the Storage facade
-            // $data['image'] = $request->image->store('public/products');
+            $data['image'] = $_SERVER['SERVER_NAME'].'/storage/'.$request->image->store('products', 'public');
         }
 
-        $product = Products::find($id);
+        $product = Products::with('category')->find($id);
         if ($product) {
-            $product->update($data);
-            return response()->json(
-                [
-                    'product' => $product,
-                    'category' => $product->category()->first()
-                ],
-                200
-            );
+            return $product;
         }
         return response()->json(['message' => 'Not Found']);
     }

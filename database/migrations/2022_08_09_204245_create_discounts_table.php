@@ -17,7 +17,7 @@ class CreateDiscountsTable extends Migration
             $table->id();
             $table->string("name");
             $table->string("discountPrice");
-
+            $table->string("status", 10)->default('Active');
             $table->timestamps();
         });
     }

@@ -37,6 +37,7 @@ class ColorsController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
+            'status' => 'string'
         ]);
         $colors = Colors::create($data);
         return $colors;
@@ -51,7 +52,7 @@ class ColorsController extends Controller
     public function show($id)
     {
         if (Colors::find($id))
-            return Colors::find($id);
+            return Colors::with('variants')->find($id);
         return response()->json(['message' => 'Not Found']);
     }
 
@@ -77,6 +78,7 @@ class ColorsController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
+            'status' => 'string'
         ]);
         $colors = Colors::find($id);
         if ($colors) {

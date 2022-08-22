@@ -17,7 +17,7 @@ Route::get("Info", function () {
 // for user registration
 Route::post("signup", [UserController::class, "register"]);
 Route::post("login", [UserController::class, "authenticate"]);
-Route::post('/logout', [UserController::class, 'logout']);
+// Route::post('/logout', [UserController::class, 'logout']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(static function () {
     Route::get("users", [UserController::class, "index"]);

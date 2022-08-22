@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+ 
+
 
 class UserController extends Controller
 {
@@ -28,6 +31,8 @@ class UserController extends Controller
         ]);
 
         $token = $user->createToken($user->name)->plainTextToken;
+        // sending verification link
+        // event(new Registered($user));
 
         return response()->json([
             'user'=> $user,
@@ -44,27 +49,29 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        if(auth()->attempt($credentials)){
-            $token = auth()->user()->createToken(auth()->user()->name)->plainTextToken;
+        $user = auth()->attempt($credentials) ;
+        if($user){
+            // $token = auth()->user()->createToken(auth()->user()->name)->plainTextToken;
+
             return response()->json([
-                'user' => auth()->user(),
-                'token' =>   $token,
+                'user' => $user,
+                'status' => true,
             ]);
         }
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    public function logout(){
-        $credentials = request()->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-        auth()->attempt($credentials);
+    // public function logout(){
+    //     $credentials = request()->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+    //     auth()->attempt($credentials);
         
-        auth()->user()->tokens()->delete();
-        return response([
-            'status' => true,
-            'message' => 'Succefully Logged Out !!'
-        ]);
-    }
+    //     auth()->user()->tokens()->delete();
+    //     return response([
+    //         'status' => true,
+    //         'message' => 'Succefully Logged Out !!'
+    //     ]);
+    // }
 }

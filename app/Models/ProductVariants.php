@@ -10,7 +10,7 @@ class ProductVariants extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'stock', 'salePrice', 'costPrice', 'saleCount',
-    'rating', 'new', 'colorId', 'sizeId', 'discountId', 'productId'
+    'rating', 'new', 'colorId', 'sizeId', 'discountId', 'productId', 'status'
     ];
 
 

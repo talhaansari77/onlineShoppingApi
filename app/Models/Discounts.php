@@ -10,7 +10,7 @@ class Discounts extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'discountPrice'
+        'name', 'discountPrice', 'status'
     ];
 
     public function variants()
