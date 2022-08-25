@@ -14,20 +14,19 @@ use App\Http\Controllers\ProductVariantsController;
 Route::get("Info", function () {
     return ("<h1>Please Register To Access This Page</h1>");
 })->name("login");
-// for user registration
+// for user registration and auth
 Route::post("signup", [UserController::class, "register"]);
 Route::post("login", [UserController::class, "authenticate"]);
-// Route::post('/logout', [UserController::class, 'logout']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(static function () {
     Route::get("users", [UserController::class, "index"]);
+    Route::post('logout', [UserController::class, 'logout']);
     // product management
-    Route::apiResource('sizes', SizesController::class);
-    Route::apiResource('colors', ColorsController::class);
     Route::apiResource('products', ProductsController::class);
     Route::apiResource('discounts', DiscountsController::class);
     Route::apiResource('categories', CategoriesController::class);
-    Route::apiResource('productVariants', ProductVariantsController::class);
+    Route::apiResource('orders', CategoriesController::class);
+    Route::apiResource('orderDetails', CategoriesController::class);
     
 });
 

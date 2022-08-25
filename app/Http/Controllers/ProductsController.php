@@ -14,7 +14,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $result = Products::with('category')->get();
+        $result = Products::with('category')->with('discount')->get();
         return $result;
     }
 
@@ -38,13 +38,17 @@ class ProductsController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
-            'categoryId' => 'required|integer',
             'description' => 'required|string|max:255',
-            'sku' => 'required|string|max:30',
+            'sku' => 'string|max:30',
             // 'image' => 'required|string',
             'brand' => 'required|string|max:30',
             'tags' => 'required|string|max:255',
-            'status' => 'string'
+            'colors' => 'string|max:255',
+            'sizes' => 'string|max:255',
+            'new' => 'string|max:255',
+            'categoryId' => 'required|integer',
+            'discountId' => 'integer',
+            'status' => 'string',
 
         ]);
 
@@ -61,7 +65,7 @@ class ProductsController extends Controller
         }
 
         $product = Products::create($data);
-        $product->category;
+        $product->category->name;
         return $product;
     }
 
@@ -73,7 +77,7 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        $product = Products::with('category')->find($id);
+        $product = Products::with('category')->with('discount')->find($id);
         if ($product) {
             return $product;
         }
@@ -102,13 +106,17 @@ class ProductsController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:30',
-            'categoryId' => 'required|integer',
             'description' => 'required|string|max:255',
-            'sku' => 'required|string|max:30',
+            'sku' => 'string|max:30',
             // 'image' => 'required|string',
             'brand' => 'required|string|max:30',
             'tags' => 'required|string|max:255',
-            'status' => 'string'
+            'colors' => 'string|max:255',
+            'sizes' => 'string|max:255',
+            'new' => 'string|max:255',
+            'categoryId' => 'required|integer',
+            'discountId' => 'integer',
+            'status' => 'string',
 
         ]);
 

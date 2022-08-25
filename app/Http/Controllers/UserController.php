@@ -61,17 +61,18 @@ class UserController extends Controller
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    // public function logout(){
-    //     $credentials = request()->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-    //     auth()->attempt($credentials);
+    public function logout(){
+        auth()->user()->tokens()->delete();
+        // $credentials = request()->validate([
+        //     'email' => 'required|email',
+        //     'password' => 'required'
+        // ]);
+        // auth()->attempt($credentials);
         
-    //     auth()->user()->tokens()->delete();
-    //     return response([
-    //         'status' => true,
-    //         'message' => 'Succefully Logged Out !!'
-    //     ]);
-    // }
+        // auth()->user()->tokens()->delete();
+        return response([
+            'status' => true,
+            'message' => 'Succefully Logged Out !!'
+        ]);
+    }
 }

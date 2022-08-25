@@ -13,8 +13,8 @@ class Discounts extends Model
         'name', 'discountPrice', 'status'
     ];
 
-    public function variants()
+    public function products()
     {
-        return $this->hasMany(ProductVariants::class, 'discountId');
+        return $this->hasMany(Products::class, 'discountId');
     }
 }
